@@ -1,18 +1,20 @@
-package net.minecraft.world.storage.loot.functions;
+package com.someguyssoftware.gottschcore.loot.functions;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import com.someguyssoftware.gottschcore.loot.LootContext;
+import com.someguyssoftware.gottschcore.loot.LootFunction;
+import com.someguyssoftware.gottschcore.loot.RandomValueRange;
+import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.RandomValueRange;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class SetDamage extends LootFunction {
    private static final Logger LOGGER = LogManager.getLogger();

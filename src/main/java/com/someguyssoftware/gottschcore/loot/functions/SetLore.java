@@ -1,4 +1,10 @@
-package net.minecraft.world.storage.loot.functions;
+package com.someguyssoftware.gottschcore.loot.functions;
+
+import java.util.List;
+import java.util.Set;
+import java.util.function.UnaryOperator;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -7,10 +13,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import java.util.List;
-import java.util.Set;
-import java.util.function.UnaryOperator;
-import javax.annotation.Nullable;
+import com.someguyssoftware.gottschcore.loot.LootContext;
+import com.someguyssoftware.gottschcore.loot.LootFunction;
+import com.someguyssoftware.gottschcore.loot.LootParameter;
+import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -18,10 +25,7 @@ import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.LootParameter;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+
 
 public class SetLore extends LootFunction {
    private final boolean replace;
@@ -48,7 +52,7 @@ public class SetLore extends LootFunction {
          }
 
          UnaryOperator<ITextComponent> unaryoperator = SetName.func_215936_a(context, this.field_215947_d);
-         this.lore.stream().map(unaryoperator).map(ITextComponent.Serializer::toJson).map(StringNBT::func_229705_a_).forEach(listnbt::add);
+         this.lore.stream().map(unaryoperator).map(ITextComponent.Serializer::toJson).map(StringNBT::valueOf).forEach(listnbt::add);
       }
 
       return stack;

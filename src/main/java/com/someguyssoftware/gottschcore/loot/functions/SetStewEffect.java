@@ -1,4 +1,8 @@
-package net.minecraft.world.storage.loot.functions;
+package com.someguyssoftware.gottschcore.loot.functions;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
@@ -10,9 +14,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
-import java.util.Map;
-import java.util.Random;
-import java.util.Map.Entry;
+import com.someguyssoftware.gottschcore.loot.LootContext;
+import com.someguyssoftware.gottschcore.loot.LootFunction;
+import com.someguyssoftware.gottschcore.loot.RandomValueRange;
+import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SuspiciousStewItem;
@@ -20,10 +26,6 @@ import net.minecraft.potion.Effect;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.RandomValueRange;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
 
 public class SetStewEffect extends LootFunction {
    private final Map<Effect, RandomValueRange> field_215950_a;

@@ -1,14 +1,17 @@
-package net.minecraft.world.storage.loot.functions;
+package com.someguyssoftware.gottschcore.loot.functions;
+
+import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import java.util.Random;
+import com.someguyssoftware.gottschcore.loot.LootContext;
+import com.someguyssoftware.gottschcore.loot.LootFunction;
+import com.someguyssoftware.gottschcore.loot.LootParameters;
+import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
+
 
 public class ExplosionDecay extends LootFunction {
    private ExplosionDecay(ILootCondition[] p_i51244_1_) {

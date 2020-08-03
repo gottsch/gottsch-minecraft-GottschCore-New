@@ -19,17 +19,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Stream;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.mod.IMod;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * @author Mark Gottschling on Dec 1, 2018
@@ -45,7 +41,12 @@ public class LootTableMaster {
 	 * customized loot table manager
 	 */
 	private LootTableManager lootTableManager;
-
+	
+	/*
+	 * customized loot predicate manager
+	 */
+	private LootPredicateManager lootPredicateManager;
+	
 	/*
 	 * relative location of loot tables to lootTablesFolderName - in resource path
 	 * or file system
@@ -71,10 +72,10 @@ public class LootTableMaster {
 	 * @param modID
 	 */
 	public void buildAndExpose(String resourceRootPath, String modID, List<String> locations) {
-		GottschCore.logger.debug("loot table folder locations -> {}", locations);
+		GottschCore.LOGGER.debug("loot table folder locations -> {}", locations);
 		// create paths to custom loot tables if they don't exist
 		for (String location : locations) {
-			GottschCore.logger.debug("buildAndExpose location -> {}", location);
+			GottschCore.LOGGER.debug("buildAndExpose location -> {}", location);
 			createLootTableFolder(modID, location);
 			exposeLootTable(resourceRootPath, modID, location);
 		}
@@ -84,12 +85,18 @@ public class LootTableMaster {
 	 * Call in WorldEvent.Load event handler.
 	 * @param world
 	 */
-	public void init(WorldServer world) {
+	public void init(ServerWorld world) {
 		// create a new loot table manager for custom file-system loot tables
 		this.lootTableManager = new LootTableManager(Paths.get(getMod().getConfig().getConfigFolder()).toAbsolutePath().toFile());
 
+		// create a new loot predicate manager
+		this.lootPredicateManager = new LootPredicateManager();
+
+		/**
+		 * TODO may have remove all references to the predicate manager, as i can't tell what it does how it interacts
+		 */
 		// create a context
-		this.context = new LootContext.Builder(world, lootTableManager).build();
+		this.context = new LootContext.Builder(world, lootTableManager, lootPredicateManager).build(LootParameterSets.GENERIC);
 	}
 	
 	/**
@@ -116,7 +123,7 @@ public class LootTableMaster {
 				if (!lootTablesMap.containsKey(key)) {
 					lootTablesMap.put(key, new ArrayList<>());
 				}
-				GottschCore.logger.debug("mapping [key][loot table] -> [{}] [{}]", key, loc);
+				GottschCore.LOGGER.debug("mapping [key][loot table] -> [{}] [{}]", key, loc);
 				lootTablesMap.get(key).add(lootTable);
 			}
 			
@@ -137,12 +144,12 @@ public class LootTableMaster {
 		Path folder = Paths.get(configPath.toString(), getMod().getId(), getLootTablesFolderName(), modID, ((location != null && !location.equals("")) ? (location + "/") : "")).toAbsolutePath();
 
 		if (Files.notExists(folder)) {
-			GottschCore.logger.debug("loot tables folder \"{}\" will be created.", folder.toString());
+			GottschCore.LOGGER.debug("loot tables folder \"{}\" will be created.", folder.toString());
 			try {
 				Files.createDirectories(folder);
 
 			} catch (IOException e) {
-				GottschCore.logger.warn("Unable to create loot tables folder \"{}\"", folder.toString());
+				GottschCore.LOGGER.warn("Unable to create loot tables folder \"{}\"", folder.toString());
 			}
 		}
 	}
@@ -168,7 +175,7 @@ public class LootTableMaster {
 		try {
 			// get the base path of the resource
 			Path resourceBasePath = fs.getPath(resourceRootPath, modID, location);
-			// GottschCore.logger.debug("resource base path -> {}",
+			// GottschCore.LOGGER.debug("resource base path -> {}",
 			// resourceBasePath.toString());
 			folder = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), getLootTablesFolderName(), modID, location).toAbsolutePath();
 
@@ -178,7 +185,7 @@ public class LootTableMaster {
 			for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
 				Path resourceFilePath = it.next();
 				// String tableName = resourceFilePath.getFileName().toString();
-				 GottschCore.logger.debug("mod loot_table -> {}", resourceFilePath.toString());
+				 GottschCore.LOGGER.debug("mod loot_table -> {}", resourceFilePath.toString());
 				// check the first file, which is actually the given directory itself
 				if (isFirst) {
 					// create the file system folder if it doesn't exist
@@ -188,13 +195,13 @@ public class LootTableMaster {
 				} else {
 					// TODO check if the file is actually a sub-directory
 					if (Files.isDirectory(resourceFilePath)) {
-						GottschCore.logger.debug("resource is a folder -> {}", resourceFilePath.toString());
+						GottschCore.LOGGER.debug("resource is a folder -> {}", resourceFilePath.toString());
 						continue;
 					}
 					
 					// test if file exists on the file system
 					Path fileSystemFilePath = Paths.get(folder.toString(), resourceFilePath.getFileName().toString()).toAbsolutePath();
-					GottschCore.logger.debug("folderLootTablePath -> {}", fileSystemFilePath.toString());
+					GottschCore.LOGGER.debug("folderLootTablePath -> {}", fileSystemFilePath.toString());
 
 					if (Files.notExists(fileSystemFilePath)) {
 						// copy from resource/classpath to file path
@@ -206,14 +213,14 @@ public class LootTableMaster {
 								fos.write(buf, 0, r);
 							}
 						} catch (IOException e) {
-							GottschCore.logger.error("Error exposing chestsheet resource to file system.", e);
+							GottschCore.LOGGER.error("Error exposing chestsheet resource to file system.", e);
 						}
 					}
 				}
 				isFirst = false;
 			}
 		} catch (Exception e) {
-			GottschCore.logger.error("error:", e);
+			GottschCore.LOGGER.error("error:", e);
 		} finally {
 			// close the stream
 			if (walk != null) {
@@ -226,7 +233,7 @@ public class LootTableMaster {
 			try {
 				fs.close();
 			} catch (IOException e) {
-				GottschCore.logger.debug("An error occurred attempting to close the FileSystem:", e);
+				GottschCore.LOGGER.debug("An error occurred attempting to close the FileSystem:", e);
 			}
 		}
 	}
@@ -246,7 +253,7 @@ public class LootTableMaster {
 		resourceRootPath = "/" + resourceRootPath.replaceAll("^/|/$", "") + "/";
 		URL url = GottschCore.class.getResource(resourceRootPath + modID + "/" + location);
 		if (url == null) {
-			GottschCore.logger.error("Unable to locate resource {}", resourceRootPath + modID + "/" + location);
+			GottschCore.LOGGER.error("Unable to locate resource {}", resourceRootPath + modID + "/" + location);
 			return null;
 		}
 
@@ -254,7 +261,7 @@ public class LootTableMaster {
 		try {
 			uri = url.toURI();
 		} catch (URISyntaxException e) {
-			GottschCore.logger.error("An error occurred during loot table processing:", e);
+			GottschCore.LOGGER.error("An error occurred during loot table processing:", e);
 			return null;
 		}
 
@@ -263,7 +270,7 @@ public class LootTableMaster {
 		try {
 			fs = FileSystems.newFileSystem(URI.create(array[0]), env);
 		} catch (IOException e) {
-			GottschCore.logger.error("An error occurred during loot table processing:", e);
+			GottschCore.LOGGER.error("An error occurred during loot table processing:", e);
 			return null;
 		}
 
@@ -282,26 +289,26 @@ public class LootTableMaster {
 		List<ResourceLocation> locs = new ArrayList<>();
 		Path path = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), getLootTablesFolderName(), modID, location).toAbsolutePath();
 
-		 GottschCore.logger.debug("Path to custom loot table -> {}", path.toString());
+		 GottschCore.LOGGER.debug("Path to custom loot table -> {}", path.toString());
 		// check if path/folder exists
 		if (Files.notExists(path)) {
-			GottschCore.logger.debug("Unable to locate -> {}", path.toString());
+			GottschCore.LOGGER.debug("Unable to locate -> {}", path.toString());
 			return locs;
 		}
 
 		try {
 			Files.walk(path).filter(Files::isRegularFile).forEach(f -> {
-				 GottschCore.logger.debug("Custom loot table -> {}", f.toAbsolutePath().toString());
+				 GottschCore.LOGGER.debug("Custom loot table -> {}", f.toAbsolutePath().toString());
 				ResourceLocation loc = 
 						new ResourceLocation(
 								getMod().getId() + ":" + getLootTablesFolderName() 
 								+ "/" + modID + "/" + location
 										+ f.getFileName().toString().replace(".json", ""));
-				GottschCore.logger.debug("Resource location -> {}", loc);
+				GottschCore.LOGGER.debug("Resource location -> {}", loc);
 				locs.add(loc);
 			});
 		} catch (IOException e) {
-			GottschCore.logger.error("Error processing custom loot table:", e);
+			GottschCore.LOGGER.error("Error processing custom loot table:", e);
 		}
 
 		return locs;
@@ -429,6 +436,14 @@ public class LootTableMaster {
 	 */
 	public void setLootTablesMap(Map<String, List<LootTable>> lootTablesMap) {
 		this.lootTablesMap = lootTablesMap;
+	}
+
+	public LootPredicateManager getLootPredicateManager() {
+		return lootPredicateManager;
+	}
+
+	public void setLootPredicateManager(LootPredicateManager lootPredicateManager) {
+		this.lootPredicateManager = lootPredicateManager;
 	}
 
 }

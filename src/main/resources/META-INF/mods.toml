@@ -2,7 +2,7 @@
 modLoader="javafml" #mandatory
 
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[31,)" #mandatory (31 is current forge version)
+loaderVersion="[31,)" #mandatory (32 is current forge version)
 
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/gottsch/gottsch-minecraft-GottschCore1.15.2/issues" #optional
@@ -55,6 +55,6 @@ Base API for all my mods.
 [[dependencies.gottschcore]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[1.15.2]"
     ordering="NONE"
     side="BOTH"

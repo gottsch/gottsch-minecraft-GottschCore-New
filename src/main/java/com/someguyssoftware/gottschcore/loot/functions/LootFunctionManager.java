@@ -1,5 +1,9 @@
 package com.someguyssoftware.gottschcore.loot.functions;
 
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.function.BiFunction;
+
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -9,13 +13,11 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
-import java.lang.reflect.Type;
-import java.util.Map;
-import java.util.function.BiFunction;
+import com.someguyssoftware.gottschcore.loot.LootContext;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
 
 public class LootFunctionManager {
    private static final Map<ResourceLocation, ILootFunction.Serializer<?>> NAME_TO_SERIALIZER_MAP = Maps.newHashMap();

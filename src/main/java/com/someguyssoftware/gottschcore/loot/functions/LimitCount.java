@@ -1,15 +1,16 @@
-package net.minecraft.world.storage.loot.functions;
+package com.someguyssoftware.gottschcore.loot.functions;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import com.someguyssoftware.gottschcore.loot.IntClamper;
+import com.someguyssoftware.gottschcore.loot.LootContext;
+import com.someguyssoftware.gottschcore.loot.LootFunction;
+import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.IntClamper;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
 
 public class LimitCount extends LootFunction {
    private final IntClamper field_215914_a;
