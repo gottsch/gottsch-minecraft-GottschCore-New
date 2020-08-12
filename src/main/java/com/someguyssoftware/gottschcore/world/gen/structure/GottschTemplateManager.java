@@ -21,24 +21,23 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.resource.AbstractResourceManager;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.DefaultTypeReferences;
 import net.minecraft.world.gen.feature.template.Template;
+import com.mojang.datafixers.DataFixer;
 
 /**
  * @author Mark Gottschling on Feb 3, 2019
  *
  */
 public class GottschTemplateManager extends AbstractResourceManager {
-	private final DataFixer fixer;
+	   private final DataFixer fixer;
 	
 	/*
 	 * templates is the master map where the key is the String representation resource location.
@@ -75,7 +74,7 @@ public class GottschTemplateManager extends AbstractResourceManager {
         markerMap = Maps.newHashMapWithExpectedSize(10);
         markerMap.put(StructureMarkers.CHEST, Blocks.CHEST);
         markerMap.put(StructureMarkers.BOSS_CHEST, Blocks.ENDER_CHEST);
-        markerMap.put(StructureMarkers.SPAWNER, Blocks.MOB_SPAWNER);
+        markerMap.put(StructureMarkers.SPAWNER, Blocks.SPAWNER);
         markerMap.put(StructureMarkers.ENTRANCE, Blocks.GOLD_BLOCK);
         markerMap.put(StructureMarkers.OFFSET, Blocks.REDSTONE_BLOCK);
         markerMap.put(StructureMarkers.PROXIMITY_SPAWNER, Blocks.IRON_BLOCK);
@@ -94,8 +93,8 @@ public class GottschTemplateManager extends AbstractResourceManager {
         // TODO rename this to preWriteReplacementMap();
         // default replacement scan map
         replacementMap = Maps.newHashMap();
-        replacementMap.put(Blocks.WOOL.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.WHITE), Blocks.AIR.getDefaultState());
-        replacementMap.put(Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.BLACK), Blocks.MOB_SPAWNER.getDefaultState());    
+        replacementMap.put(Blocks.WHITE_WOOL.getDefaultState(), Blocks.AIR.getDefaultState());
+        replacementMap.put(Blocks.BLACK_STAINED_GLASS.getDefaultState(), Blocks.SPAWNER.getDefaultState());    
 	}
 
 	/**
@@ -202,14 +201,15 @@ public class GottschTemplateManager extends AbstractResourceManager {
 	private void readTemplateFromStream(String id, InputStream stream, List<Block> markerBlocks, 
 			Map<BlockState, BlockState> replacementBlocks) throws IOException {
 		
-		CompoundNBT nbttagcompound = CompressedStreamTools.readCompressed(stream);
+		CompoundNBT nbt = CompressedStreamTools.readCompressed(stream);
 
-		if (!nbttagcompound.hasKey("DataVersion", 99)) {
-			nbttagcompound.setInteger("DataVersion", 500);
+		if (!nbt.contains("DataVersion", 99)) {
+			nbt.putInt("DataVersion", 500);
 		}
 
-		GottschTemplate template = new GottschTemplate();
-		template.read(this.fixer.process(FixTypes.STRUCTURE, nbttagcompound), markerBlocks, replacementBlocks);
+		GottschTemplate2 template = new GottschTemplate2();
+		template.read(NBTUtil.update(this.fixer, DefaultTypeReferences.STRUCTURE, nbt, nbt.getInt("DataVersion")));
+//		template.read(this.fixer.process(FixTypes.STRUCTURE, nbt), markerBlocks, replacementBlocks);
 		GottschCore.LOGGER.debug("adding template to map with key -> {}", id);
 		this.templates.put(id, template);
 	}
