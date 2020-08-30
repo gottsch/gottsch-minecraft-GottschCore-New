@@ -3,6 +3,10 @@
  */
 package com.someguyssoftware.gottschcore.spatial;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.util.Direction;
 
 /**
@@ -20,11 +24,19 @@ public enum Heading {
 	EAST(Direction.EAST);
 	// @formatter:on
 
+	private static final Map<Direction, Heading> mapByDirection = new HashMap<Direction, Heading>();
+	
 	/*
 	 * wrapped minecraft class
 	 */
 	private Direction direction;
 
+	// setup reverse lookup
+	static {
+		for (Heading x : EnumSet.allOf(Heading.class)) {
+			mapByDirection.put(x.getDirection(), x);
+		}
+	}
 	/**
 	 * 
 	 * @param direction
@@ -40,6 +52,10 @@ public enum Heading {
 	public Direction toDirection() {
 		return direction;
 	}
+	
+	public Heading byDirection(Direction direction) {
+		return mapByDirection.get(direction);
+	}
 
 	/**
 	 * 
@@ -54,8 +70,8 @@ public enum Heading {
 	 * @param index
 	 * @return
 	 */
-	public Heading getByIndex(int index) {
-		return null;
+	public static Heading getByIndex(int index) {
+		return mapByDirection.get(Direction.byIndex(index % values().length));
 	}
 
 	/**
@@ -212,5 +228,9 @@ public enum Heading {
 		default:
 			return Heading.NORTH;
 		}
+	}
+
+	public Direction getDirection() {
+		return direction;
 	}
 }
