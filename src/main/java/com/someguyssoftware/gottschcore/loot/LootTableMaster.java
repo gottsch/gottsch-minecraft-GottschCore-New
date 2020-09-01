@@ -289,22 +289,22 @@ public class LootTableMaster {
 		List<ResourceLocation> locs = new ArrayList<>();
 		Path path = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), getLootTablesFolderName(), modID, location).toAbsolutePath();
 
-		 GottschCore.LOGGER.debug("Path to custom loot table -> {}", path.toString());
+		 GottschCore.LOGGER.info("Path to custom loot table -> {}", path.toString());
 		// check if path/folder exists
 		if (Files.notExists(path)) {
-			GottschCore.LOGGER.debug("Unable to locate -> {}", path.toString());
+			GottschCore.LOGGER.info("Unable to locate -> {}", path.toString());
 			return locs;
 		}
 
 		try {
 			Files.walk(path).filter(Files::isRegularFile).forEach(f -> {
-				 GottschCore.LOGGER.debug("Custom loot table -> {}", f.toAbsolutePath().toString());
+				 GottschCore.LOGGER.info("Custom loot table -> {}", f.toAbsolutePath().toString());
 				ResourceLocation loc = 
 						new ResourceLocation(
 								getMod().getId() + ":" + getLootTablesFolderName() 
 								+ "/" + modID + "/" + location
 										+ f.getFileName().toString().replace(".json", ""));
-				GottschCore.LOGGER.debug("Resource location -> {}", loc);
+				GottschCore.LOGGER.info("Resource location -> {}", loc);
 				locs.add(loc);
 			});
 		} catch (IOException e) {

@@ -51,7 +51,8 @@ public class LootTableManager /*extends JsonReloadListener*/ {
 			.registerTypeHierarchyAdapter(LootContext.EntityTarget.class, new LootContext.EntityTarget.Serializer())
 			.create();
 
-	private Map<ResourceLocation, LootTable> registeredLootTables = ImmutableMap.of();
+	// TEMP make public
+	public Map<ResourceLocation, LootTable> registeredLootTables = ImmutableMap.of();
 //	private final LootPredicateManager predicateManager;
 
 	/*

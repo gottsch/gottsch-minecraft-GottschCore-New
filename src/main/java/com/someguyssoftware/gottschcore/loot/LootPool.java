@@ -4,7 +4,6 @@
 package com.someguyssoftware.gottschcore.loot;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -214,7 +213,7 @@ public class LootPool {
 	         ILootFunction[] ailootfunction = JSONUtils.deserializeClass(jsonobject, "functions", new ILootFunction[0], p_deserialize_3_, ILootFunction[].class);
 	         IRandomRange irandomrange = RandomRanges.deserialize(jsonobject.get("rolls"), p_deserialize_3_);
 	         RandomValueRange randomvaluerange = JSONUtils.deserializeClass(jsonobject, "bonus_rolls", new RandomValueRange(0.0F, 0.0F), p_deserialize_3_, RandomValueRange.class);
-	         return new LootPool(alootentry, ailootcondition, ailootfunction, irandomrange, randomvaluerange, net.minecraftforge.common.ForgeHooks.readPoolName(jsonobject));
+	         return new LootPool(alootentry, ailootcondition, ailootfunction, irandomrange, randomvaluerange, readPoolName(jsonobject));
 	      }
 
 	      public JsonElement serialize(LootPool p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
@@ -238,4 +237,13 @@ public class LootPool {
 	         return jsonobject;
 	      }
 	   }
+	   
+	    public static String readPoolName(JsonObject json) {
+	        if (json.has("name")) {
+	            return JSONUtils.getString(json, "name");
+	        }
+	        else {
+	            throw new JsonParseException("Missing `name` entry for pool");
+	        }
+	    }
 	}

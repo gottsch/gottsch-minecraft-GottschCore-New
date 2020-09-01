@@ -199,10 +199,10 @@ public class LootContext {
          if (!set.isEmpty()) {
             throw new IllegalArgumentException("Parameters not allowed in this parameter set: " + set);
          } else {
-            Set<LootParameter<?>> set1 = Sets.difference(parameterSet.getRequiredParameters(), this.lootParameters.keySet());
-            if (!set1.isEmpty()) {
-               throw new IllegalArgumentException("Missing required parameters: " + set1);
-            } else {
+//            Set<LootParameter<?>> set1 = Sets.difference(parameterSet.getRequiredParameters(), this.lootParameters.keySet());
+//            if (!set1.isEmpty()) {
+//               throw new IllegalArgumentException("Missing required parameters: " + set1);
+//            } else {
                Random random = this.rand;
                if (random == null) {
                   random = new Random();
@@ -215,7 +215,7 @@ public class LootContext {
                 * instead of minecraftserver.func_229736_aP_()::func_227517_a_, call LootTableMaster.getPredicateManager()??
                 */
                return new LootContext(random, this.luck, this.world, lootTableManager::getLootTableFromLocation, lootPredicateManager::getLootConditionFromLocation, this.lootParameters, this.field_216026_c);
-            }
+//            }
          }
       }
    }
