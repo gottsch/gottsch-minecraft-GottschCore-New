@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
+@Deprecated
 public final class BinomialRange implements IRandomRange {
    private final int n;
    private final float p;
