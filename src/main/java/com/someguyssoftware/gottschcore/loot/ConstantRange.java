@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
+@Deprecated
 public final class ConstantRange implements IRandomRange {
    private final int value;
 
