@@ -6,6 +6,7 @@ import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
 import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
+@Deprecated
 public class AlternativesLootEntry extends ParentedLootEntry {
 	   AlternativesLootEntry(LootEntry[] p_i51263_1_, ILootCondition[] p_i51263_2_) {
 	      super(p_i51263_1_, p_i51263_2_);
