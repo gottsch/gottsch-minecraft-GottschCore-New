@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableSet;
 
 
 import java.util.Set;
-
+@Deprecated
 public interface IParameterized {
    default Set<LootParameter<?>> getRequiredParameters() {
       return ImmutableSet.of();

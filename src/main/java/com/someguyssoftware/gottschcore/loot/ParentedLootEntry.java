@@ -8,7 +8,7 @@ import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
 import java.util.function.Consumer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public abstract class ParentedLootEntry extends LootEntry {
    protected final LootEntry[] field_216147_c;
    private final ILootEntry field_216148_e;

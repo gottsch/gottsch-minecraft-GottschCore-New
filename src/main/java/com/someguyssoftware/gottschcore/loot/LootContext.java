@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
-
+@Deprecated
 public class LootContext {
    private final Random random;
    private final float luck;

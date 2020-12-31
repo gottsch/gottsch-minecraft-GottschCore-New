@@ -13,7 +13,7 @@ import java.util.Random;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-
+@Deprecated
 public class RandomValueRange implements IRandomRange {
    private final float min;
    private final float max;

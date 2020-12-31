@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-
+@Deprecated
 public class EmptyLootEntry extends StandaloneLootEntry {
    private EmptyLootEntry(int p_i51258_1_, int p_i51258_2_, ILootCondition[] p_i51258_3_, ILootFunction[] p_i51258_4_) {
       super(p_i51258_1_, p_i51258_2_, p_i51258_3_, p_i51258_4_);

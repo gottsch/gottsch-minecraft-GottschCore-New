@@ -30,7 +30,7 @@ import com.someguyssoftware.gottschcore.loot.functions.LootFunctionManager;
 
 import net.minecraft.util.ResourceLocation;
 
-
+@Deprecated
 /**
  * 
  * @author Mark Gottschling on May 29, 2020

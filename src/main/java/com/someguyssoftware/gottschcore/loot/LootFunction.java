@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.ArrayUtils;
-
+@Deprecated
 public abstract class LootFunction implements ILootFunction {
    protected final ILootCondition[] conditions;
    private final Predicate<LootContext> combinedConditions;

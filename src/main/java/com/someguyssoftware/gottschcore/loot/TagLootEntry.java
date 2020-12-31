@@ -16,7 +16,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
-
+@Deprecated
 public class TagLootEntry extends StandaloneLootEntry {
    private final Tag<Item> field_216180_c;
    private final boolean field_216181_h;

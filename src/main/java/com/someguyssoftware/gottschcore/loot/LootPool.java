@@ -29,7 +29,7 @@ import com.someguyssoftware.gottschcore.loot.functions.LootFunctionManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.MathHelper;
-
+@Deprecated
 public class LootPool {
 	   private final String name;
 	   private final List<LootEntry> lootEntries;

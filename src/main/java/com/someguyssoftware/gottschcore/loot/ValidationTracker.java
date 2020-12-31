@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public class ValidationTracker {
 	   private final Multimap<String, String> field_227519_a_;
 	   private final Supplier<String> field_227520_b_;

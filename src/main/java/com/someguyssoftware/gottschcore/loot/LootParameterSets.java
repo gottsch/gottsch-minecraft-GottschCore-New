@@ -5,7 +5,7 @@ import com.google.common.collect.HashBiMap;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public class LootParameterSets {
    private static final BiMap<ResourceLocation, LootParameterSet> REGISTRY = HashBiMap.create();
    public static final LootParameterSet EMPTY = register("empty", (p_216249_0_) -> {

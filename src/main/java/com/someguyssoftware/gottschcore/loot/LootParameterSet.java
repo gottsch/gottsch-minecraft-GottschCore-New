@@ -4,7 +4,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Set;
-
+@Deprecated
 public class LootParameterSet {
 	   private final Set<LootParameter<?>> required;
 	   private final Set<LootParameter<?>> all;

@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
-
+@Deprecated
 public class DynamicLootEntry extends StandaloneLootEntry {
 	   public static final ResourceLocation field_216165_c = new ResourceLocation("dynamic");
 	   private final ResourceLocation name;

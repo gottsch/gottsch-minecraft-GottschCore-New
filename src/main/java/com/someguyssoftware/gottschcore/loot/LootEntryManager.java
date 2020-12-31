@@ -17,7 +17,7 @@ import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
 
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public class LootEntryManager {
 	   private static final Map<ResourceLocation, LootEntry.Serializer<?>> field_216197_a = Maps.newHashMap();
 	   private static final Map<Class<?>, LootEntry.Serializer<?>> field_216198_b = Maps.newHashMap();

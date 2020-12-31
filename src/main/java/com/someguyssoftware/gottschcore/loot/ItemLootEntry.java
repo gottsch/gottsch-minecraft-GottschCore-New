@@ -14,7 +14,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-
+@Deprecated
 public class ItemLootEntry extends StandaloneLootEntry {
    private final Item item;
 

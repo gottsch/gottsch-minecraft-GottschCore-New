@@ -28,7 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-
+@Deprecated
 public class LootTable {
 	   private static final Logger LOGGER = LogManager.getLogger();
 	   public static final LootTable EMPTY_LOOT_TABLE = new LootTable(LootParameterSets.EMPTY, new LootPool[0], new ILootFunction[0]);

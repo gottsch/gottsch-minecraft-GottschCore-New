@@ -26,7 +26,7 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
-
+@Deprecated
 /**
  * @author Mark Gottschling on Dec 1, 2018
  *

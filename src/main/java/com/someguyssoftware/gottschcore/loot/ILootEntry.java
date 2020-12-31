@@ -2,7 +2,7 @@ package com.someguyssoftware.gottschcore.loot;
 
 import java.util.Objects;
 import java.util.function.Consumer;
-
+@Deprecated
 @FunctionalInterface
 interface ILootEntry {
    ILootEntry field_216139_a = (p_216134_0_, p_216134_1_) -> {

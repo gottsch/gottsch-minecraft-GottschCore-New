@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
-
+@Deprecated
 public class TableLootEntry extends StandaloneLootEntry {
    private final ResourceLocation table;
 

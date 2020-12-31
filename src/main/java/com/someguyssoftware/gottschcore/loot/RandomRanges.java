@@ -9,7 +9,7 @@ import com.google.gson.JsonSerializationContext;
 import java.util.Map;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public class RandomRanges {
    private static final Map<ResourceLocation, Class<? extends IRandomRange>> field_216132_a = Maps.newHashMap();
 

@@ -12,7 +12,7 @@ import java.util.function.IntUnaryOperator;
 import javax.annotation.Nullable;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.MathHelper;
-
+@Deprecated
 public class IntClamper implements IntUnaryOperator {
    private final Integer field_215852_a;
    private final Integer field_215853_b;

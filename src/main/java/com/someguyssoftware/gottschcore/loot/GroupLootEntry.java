@@ -1,7 +1,7 @@
 package com.someguyssoftware.gottschcore.loot;
 
 import com.someguyssoftware.gottschcore.loot.conditions.ILootCondition;
-
+@Deprecated
 public class GroupLootEntry extends ParentedLootEntry {
    GroupLootEntry(LootEntry[] p_i51257_1_, ILootCondition[] p_i51257_2_) {
       super(p_i51257_1_, p_i51257_2_);

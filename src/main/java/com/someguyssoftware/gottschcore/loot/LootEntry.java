@@ -10,7 +10,7 @@ import com.someguyssoftware.gottschcore.loot.conditions.LootConditionManager;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public abstract class LootEntry implements ILootEntry {
 	   /** Conditions for the loot entry to be applied. */
 	   protected final ILootCondition[] conditions;

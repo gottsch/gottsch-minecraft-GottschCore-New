@@ -1,7 +1,7 @@
 package com.someguyssoftware.gottschcore.loot;
 
 import net.minecraft.util.ResourceLocation;
-
+@Deprecated
 public class LootParameter<T> {
    private final ResourceLocation id;
 

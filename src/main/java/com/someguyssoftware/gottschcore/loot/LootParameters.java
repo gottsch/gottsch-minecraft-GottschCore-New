@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-
+@Deprecated
 public class LootParameters {
    public static final LootParameter<Entity> THIS_ENTITY = register("this_entity");
    public static final LootParameter<PlayerEntity> LAST_DAMAGE_PLAYER = register("last_damage_player");
