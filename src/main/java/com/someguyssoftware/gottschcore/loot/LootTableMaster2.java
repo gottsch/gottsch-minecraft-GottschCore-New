@@ -88,9 +88,9 @@ public class LootTableMaster2 implements ILootTableMaster {
 	 */
 	@Override
 	public void init(ServerWorld world) {
-		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "data", "loot_tables");
+		Path path = Paths.get(world.getSaveHandler().getWorldDirectory().getPath(), "datapacks");
 		setWorldDataBaseFolder(path.toFile());
-		this.context = new LootContext.Builder(world).build(LootParameterSets.CHEST);
+		this.context = new LootContext.Builder(world).build(LootParameterSets.GENERIC);
 	}
 
 	@Override
@@ -472,7 +472,7 @@ public class LootTableMaster2 implements ILootTableMaster {
 		final String location= (locationIn != null && !locationIn.equals("")) ? (locationIn + "/") : "";
 
 		List<ResourceLocation> locs = new ArrayList<>();
-		Path path = Paths.get(getWorldDataBaseFolder().getPath(), modID, location).toAbsolutePath();
+		Path path = Paths.get(getWorldDataBaseFolder().getPath(), "data", modID, "loot_tables", location).toAbsolutePath();
 
 		 GottschCore.LOGGER.debug("Path to world data loot table -> {}", path.toString());
 		// check if path/folder exists
@@ -523,7 +523,7 @@ public class LootTableMaster2 implements ILootTableMaster {
 //			File lootTableFile = new File(new File(getWorldDataBaseFolder(), resource.getResourceDomain()),
 //					resource.getResourcePath() + ".json");
 
-			File lootTableFile = Paths.get(folder.getPath(), resource.getNamespace(), resource.getPath() + ".json").toFile();
+			File lootTableFile = Paths.get(folder.getPath(), "data", resource.getNamespace(), "loot_tables", resource.getPath() + ".json").toFile();
 			LOGGER.debug("Attempting to load loot table {} from {}", resource, lootTableFile);
 			
 			if (lootTableFile.exists()) {
