@@ -39,7 +39,7 @@ public class BiomeHelper {
 	 * @param biomeTypeNames
 	 * @param typeHolders
 	 */
-	public static void loadBiomeList(String[] biomeTypeNames, List<BiomeTypeHolder> typeHolders) {
+	public static void loadBiomeList(List<? extends String> biomeTypeNames, List<BiomeTypeHolder> typeHolders) {
 		BiomeTypeHolder holder = null;
 		Object t = null;
 

@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 /**
@@ -26,7 +27,7 @@ public class BlockContext {
 	 * @param world
 	 * @param coords
 	 */
-	public BlockContext(World world, ICoords coords) {
+	public BlockContext(IWorld world, ICoords coords) {
 		this.coords = coords;
 		this.state = world.getBlockState(coords.toPos());
 	}
@@ -37,7 +38,7 @@ public class BlockContext {
 	 * @param world
 	 * @param pos
 	 */
-	public BlockContext(World world, BlockPos pos) {
+	public BlockContext(IWorld world, BlockPos pos) {
 		this(world, new Coords(pos));
 	}
 

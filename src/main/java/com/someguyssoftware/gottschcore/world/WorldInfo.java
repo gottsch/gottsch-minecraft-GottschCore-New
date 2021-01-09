@@ -10,6 +10,7 @@ import com.someguyssoftware.gottschcore.spatial.ICoords;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
@@ -196,7 +197,7 @@ public class WorldInfo {
 	 * @param coords
 	 * @return
 	 */
-	public static ICoords getDryLandSurfaceCoords(final World world, final ICoords coords) {
+	public static ICoords getDryLandSurfaceCoords(final IWorld world, final ICoords coords) {
 		boolean isSurfaceBlock = false;
 		ICoords newCoords = coords;
 
@@ -365,7 +366,7 @@ public class WorldInfo {
 	 * @param airPercentRequired
 	 * @return
 	 */
-	public static boolean isValidAboveGroundBase(final World world, final ICoords coords, final int width,
+	public static boolean isValidAboveGroundBase(final IWorld world, final ICoords coords, final int width,
 			final int depth, final double groundPercentRequired, final double airPercentRequired) {
 		return isSolidBase(world, coords, width, depth, groundPercentRequired)
 				&& isAirBase(world, coords.up(1), width, depth, airPercentRequired);
@@ -401,7 +402,7 @@ public class WorldInfo {
 	 * @param percentRequired
 	 * @return
 	 */
-	public static boolean isSolidBase(final World world, final ICoords coords, final int width, final int depth,
+	public static boolean isSolidBase(final IWorld world, final ICoords coords, final int width, final int depth,
 			final double percentRequired) {
 		double percent = getSolidBasePercent(world, coords.down(1), width, depth);
 
@@ -419,7 +420,7 @@ public class WorldInfo {
 	 * @param depth
 	 * @return
 	 */
-	public static double getSolidBasePercent(final World world, final ICoords coords, final int width,
+	public static double getSolidBasePercent(final IWorld world, final ICoords coords, final int width,
 			final int depth) {
 		int platformSize = 0;
 
@@ -452,7 +453,7 @@ public class WorldInfo {
 	 * @param depth
 	 * @return
 	 */
-	public static double getAirBasePercent(final World world, final ICoords coords, final int width, final int depth) {
+	public static double getAirBasePercent(final IWorld world, final ICoords coords, final int width, final int depth) {
 		double percent = 0.0D;
 		int airBlocks = 0;
 
@@ -482,7 +483,7 @@ public class WorldInfo {
 	 * @param percentRequired
 	 * @return
 	 */
-	public static boolean isAirBase(final World world, final ICoords coords, final int width, final int depth,
+	public static boolean isAirBase(final IWorld world, final ICoords coords, final int width, final int depth,
 			double percentRequired) {
 		double percent = getAirBasePercent(world, coords.down(1), width, depth);
 		if (percent < percentRequired) {
