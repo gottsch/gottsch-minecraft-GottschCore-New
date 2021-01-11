@@ -90,6 +90,11 @@ public class MetaManager extends AbstractResourceManager {
 		return this.getMetaMap().containsKey(key) ? (IMeta) this.getMetaMap().get(key) : null;
 	}
 
+	/**
+	 * 
+	 * @param location
+	 * @return
+	 */
 	public boolean readMeta(ResourceLocation location) {
 		String loc = location.getPath();
 		GottschCore.LOGGER.debug("meta file resource path -> {}", loc);
@@ -99,7 +104,7 @@ public class MetaManager extends AbstractResourceManager {
 		}
 		Path path = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), loc + suffix);
 		File file = path.toFile();
-		GottschCore.LOGGER.debug("template file path -> {}", file.getAbsoluteFile());
+		GottschCore.LOGGER.debug("meta file path -> {}", file.getAbsoluteFile());
 		if (!file.exists()) {
 			GottschCore.LOGGER.debug("file does not exist, read from jar -> {}", file.getAbsolutePath());
 			return this.readFromJar(location);
@@ -132,7 +137,7 @@ public class MetaManager extends AbstractResourceManager {
 		boolean flag;
 
 		try {
-			Path path = Paths.get(ASSETS_FOLDER, resourceDomain, getBaseResourceFolder(), resourcePath + ".json");
+			Path path = Paths.get("/data", resourceDomain, getBaseResourceFolder(), resourcePath + ".json");
 //			GottschCore.LOGGER.debug("attempting to open resource stream -> {}", "/assets/" + resourceDomain + "/structures/" + resourcePath + ".json");
 			GottschCore.LOGGER.debug("attempting to open resource stream -> {}", path.toString());
 //			inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + resourceDomain + "/structures/" + resourcePath + ".nbt");

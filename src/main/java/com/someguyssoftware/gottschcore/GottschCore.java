@@ -57,9 +57,6 @@ public class GottschCore implements IMod {
 		GottschCoreConfig.loadConfig(GottschCoreConfig.COMMON_CONFIG,
 				FMLPaths.CONFIGDIR.get().resolve("gottschcore-common.toml"));
 
-		// test accessing the logging properties
-		GottschCoreConfig.LOGGING.filename.get();
-
 		// TODO research overridding the log4j.json/xml to see if custom logging can be
 		// added
 	}

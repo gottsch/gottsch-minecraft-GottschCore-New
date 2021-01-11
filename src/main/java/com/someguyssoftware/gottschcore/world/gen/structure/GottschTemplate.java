@@ -36,6 +36,7 @@ import net.minecraft.util.ObjectIntIdentityMap;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
@@ -96,19 +97,19 @@ public class GottschTemplate extends Template {
 //
 //		return map;
 //	}
-//
-//	/**
-//	 * This takes the data stored in this instance and puts them into the world.
-//	 * 
-//	 * @param worldIn     The world to use
-//	 * @param pos         The origin position for the structure
-//	 * @param placementIn Placement settings to use
-//	 */
-//	@Override
-//	public void addBlocksToWorld(World worldIn, BlockPos pos, PlacementSettings placementIn) {
-//		this.addBlocksToWorld(worldIn, pos, new BlockRotationProcessor(pos, placementIn), placementIn, 2);
-//	}
-//
+
+	/**
+	 * This takes the data stored in this instance and puts them into the world.
+	 * 
+	 * @param worldIn     The world to use
+	 * @param pos         The origin position for the structure
+	 * @param placementIn Placement settings to use
+	 */
+	@Override
+	public void addBlocksToWorld(IWorld worldIn, BlockPos pos, PlacementSettings placementIn) {
+		this.addBlocksToWorld(worldIn, pos, /*new BlockRotationProcessor(pos, placementIn),*/ placementIn, 2);
+	}
+
 //	/**
 //	 * Adds blocks and entities from this structure to the given world.
 //	 * 
@@ -733,26 +734,26 @@ public class GottschTemplate extends Template {
 //	public void setSize(BlockPos size) {
 //		this.size = size;
 //	}
-//
-//	/**
-//	 * 
-//	 * @param random
-//	 * @param findBlock
-//	 * @return
-//	 */
-//	public ICoords findCoords(Random random, Block findBlock) {
-//		ICoords coords = null; // TODO should this be an empty object or Coords.EMPTY_COORDS
-//		List<BlockContext> contextList = (List<BlockContext>) getTagBlockMap().get(findBlock);
-//		List<ICoords> list = contextList.stream().map(c -> c.getCoords()).collect(Collectors.toList());
-//		if (list.isEmpty())
-//			return new Coords(0, 0, 0);
-//		if (list.size() == 1)
-//			coords = list.get(0);
-//		else
-//			coords = list.get(random.nextInt(list.size()));
-//		return coords;
-//	}
-//
+
+	/**
+	 * 
+	 * @param random
+	 * @param findBlock
+	 * @return
+	 */
+	public ICoords findCoords(Random random, Block findBlock) {
+		ICoords coords = null; // TODO should this be an empty object or Coords.EMPTY_COORDS
+		List<BlockContext> contextList = (List<BlockContext>) getTagBlockMap().get(findBlock);
+		List<ICoords> list = contextList.stream().map(c -> c.getCoords()).collect(Collectors.toList());
+		if (list.isEmpty())
+			return new Coords(0, 0, 0);
+		if (list.size() == 1)
+			coords = list.get(0);
+		else
+			coords = list.get(random.nextInt(list.size()));
+		return coords;
+	}
+
 //	/**
 //	 * 
 //	 * @param findBlock
@@ -777,11 +778,15 @@ public class GottschTemplate extends Template {
 //				.collect(Collectors.toList());
 //		return coords;
 //	}
-//
-//	public Multimap<Block, BlockContext> getTagBlockMap() {
-//		return tagBlockMap;
-//	}
-//
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Multimap<Block, BlockContext> getTagBlockMap() {
+		return tagBlockMap;
+	}
+
 //	@Deprecated
 //	public Multimap<Block, StructureMarkerContext> getMarkerMap() {
 //		Multimap<Block, StructureMarkerContext> markerMap = ArrayListMultimap.create();

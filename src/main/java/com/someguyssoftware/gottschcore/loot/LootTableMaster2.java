@@ -3,8 +3,6 @@
  */
 package com.someguyssoftware.gottschcore.loot;
 
-import static com.someguyssoftware.gottschcore.GottschCore.LOGGER;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +39,6 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.gottschcore.version.VersionChecker;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;

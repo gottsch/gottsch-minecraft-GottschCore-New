@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.gottschcore.config;
 
+import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.mod.IMod;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -16,11 +17,14 @@ import net.minecraftforge.fml.loading.FMLPaths;
  * @author Mark Gottschling on Nov 15, 2019
  *
  */
-@EventBusSubscriber
+@EventBusSubscriber(modid = GottschCore.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class GottschCoreConfig extends AbstractConfig {
+	protected static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec COMMON_CONFIG;
 
 	static {
+		MOD = new Mod(COMMON_BUILDER);
+		LOGGING = new Logging(COMMON_BUILDER);
 		COMMON_CONFIG = COMMON_BUILDER.build();
 	}
 

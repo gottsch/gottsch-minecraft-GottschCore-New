@@ -19,7 +19,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.mod.IMod;
@@ -33,6 +37,12 @@ import net.minecraft.util.ResourceLocation;
 public class AbstractResourceManager implements IResourceManager {
 	private IMod mod;
 
+//	/*
+//	 * resource locations have slightly differing path when in the jar file and when on the file system.
+//	 * ex:	jar path = data/modid/meta/structures/file.json
+//	 * 		file path = configPath/modid/meta/structures/file.json
+//	 */
+//	private String rootResourceFolder;
 	/*
 	 * the base folder name on the file system where resources should be located.
 	 * this location is after the /<configPath>/<modID>/ path
@@ -51,15 +61,39 @@ public class AbstractResourceManager implements IResourceManager {
 	 * com.someguyssoftware.gottschcore.resource.IResourceManager#buildAndExpose(
 	 * java.lang.String, java.lang.String, java.util.List)
 	 */
-	@Override
-	public void buildAndExpose(String jarResourceRootPath, String modID, List<String> locations) {
-		GottschCore.LOGGER.debug("resource folder locations -> {}", locations);
-		// create paths to custom resources if they don't exist
-		for (String location : locations) {
-			GottschCore.LOGGER.debug("buildAndExpose location -> {}", location);
-			createFileSystemResourceFolder(modID, location);
-			exposeResource(jarResourceRootPath, modID, location);
-		}
+//	@Override
+//	public void buildAndExpose(String jarResourceRootPath, String modID, List<String> locations) {
+//		GottschCore.LOGGER.debug("resource folder locations -> {}", locations);
+//		// create paths to custom resources if they don't exist
+//		for (String location : locations) {
+//			GottschCore.LOGGER.debug("buildAndExpose location -> {}", location);
+//			createFileSystemResourceFolder(modID, location);
+//			exposeResource(jarResourceRootPath, modID, location);
+//		}
+//	}
+	
+	/**
+	 * 
+	 */
+	public void buildAndExpose(String resourceRootPath, String modID, String basePath, List<String> resourceRelativePaths) {
+		resourceRelativePaths.forEach(resourceRelativePath -> {
+			GottschCore.LOGGER.debug("AbstractResourceManager | buildAndExpose | processing relative resource path -> {}", resourceRelativePath);
+			// this represents the entire file path
+			Path fileSystemFilePath = Paths.get(getMod().getConfig().getConfigFolder(), getMod().getId(), basePath, resourceRelativePath);
+			GottschCore.LOGGER.debug("AbstractResourceManager | buildAndExpose | file system path -> {}", fileSystemFilePath.toString());
+			try {
+				// check if file already exists
+				if (Files.notExists(fileSystemFilePath)) { 
+					Path resourcePath = Paths.get(resourceRootPath, modID, basePath, resourceRelativePath);
+					GottschCore.LOGGER.debug("AbstractResourceManager | buildAndExpose | full resource path -> {}", resourcePath.toString());
+					FileUtils.copyInputStreamToFile(Objects.requireNonNull(GottschCore.class.getClassLoader().getResourceAsStream(resourcePath.toString())),
+							fileSystemFilePath.toFile());
+					// TODO add a flag if a file was copied over - save it in the manager
+				}
+			} catch (Exception e) {
+				GottschCore.LOGGER.error("AbstractResourceManager | buildAndExpose |  copying resources error:", e);
+			}
+		});
 	}
 
 	/**
@@ -200,11 +234,11 @@ public class AbstractResourceManager implements IResourceManager {
 	protected List<ResourceLocation> getResourceLocations(String modIDIn, String locationIn) {
 		// ensure that the requried properties (modID) is not null
 		final String modID = (modIDIn == null || modIDIn.isEmpty()) ? getMod().getId() : modIDIn;
-		final String location = (locationIn != null && !locationIn.equals("")) ? (locationIn + "/") : "";
+		final String location = locationIn;//(locationIn != null && !locationIn.equals("")) ? (locationIn + "/") : "";
 
 		List<ResourceLocation> locs = new ArrayList<>();
 		Path path = Paths
-				.get(getMod().getConfig().getConfigFolder(), getMod().getId(), getBaseResourceFolder(), modID, location)
+				.get(getMod().getConfig().getConfigFolder(), modID, getBaseResourceFolder(), location)
 				.toAbsolutePath();
 
 		GottschCore.LOGGER.debug("Path to custom resource -> {}", path.toString());
@@ -217,10 +251,17 @@ public class AbstractResourceManager implements IResourceManager {
 		try {
 			Files.walk(path).filter(Files::isRegularFile).forEach(f -> {
 				GottschCore.LOGGER.debug("Custom resource file path-> {}", f.toAbsolutePath().toString());
-				ResourceLocation loc = new ResourceLocation(getMod().getId() + ":" + getBaseResourceFolder() + "/"
-						+ modID + "/" + location + f.getFileName().toString());// .replace(".json", ""));
-				GottschCore.LOGGER.debug("Resource location -> {}", loc);
-				locs.add(loc);
+				 /*
+				  * only add current files. (*.json, *.nbt - not *.bak or anything else)
+				  */
+				String extension = FilenameUtils.getExtension(f.getFileName().toString());
+				 if (extension.equals("json") || extension.equals("nbt")) {
+					ResourceLocation loc = 
+							new ResourceLocation(modID + ":" + getBaseResourceFolder() + "/" + location.replace(".json", "").replace(".nbt", ""));
+	//				ResourceLocation loc = new ResourceLocation(modID, getBaseResourceFolder() + "/" + location);
+					GottschCore.LOGGER.debug("Resource location -> {}", loc);
+					locs.add(loc);
+				 }
 			});
 		} catch (IOException e) {
 			GottschCore.LOGGER.error("Error processing custom resource:", e);

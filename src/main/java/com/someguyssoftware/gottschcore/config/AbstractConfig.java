@@ -14,17 +14,22 @@ import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
  *
  */
 public abstract class AbstractConfig implements IConfig {
-	protected static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
-	protected static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
+//	protected final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+//	protected final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
 
 	public static Mod MOD;
 	public static Logging LOGGING;
 
 	static {
-		MOD = new Mod(COMMON_BUILDER);
-		LOGGING = new Logging(COMMON_BUILDER);
+//		MOD = new Mod(COMMON_BUILDER);
+//		LOGGING = new Logging(COMMON_BUILDER);
 	}
 
+//	public AbstractConfig() {
+//		MOD = new Mod(COMMON_BUILDER);
+//		LOGGING = new Logging(COMMON_BUILDER);
+//	}
+	
 	/**
 	 * 
 	 * @author Mark Gottschling on Nov 16, 2019
@@ -72,7 +77,7 @@ public abstract class AbstractConfig implements IConfig {
 		public ConfigValue<String> size;
 		public ConfigValue<String> filename;
 
-		Logging(final ForgeConfigSpec.Builder builder) {
+		public Logging(final ForgeConfigSpec.Builder builder) {
 			builder.comment("Logging properties").push(LOGGING_CATEGORY);
 
 			level = builder.comment("The logging level. Set to 'off' to disable logging.",

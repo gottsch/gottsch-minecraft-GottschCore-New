@@ -1,11 +1,21 @@
 package com.someguyssoftware.gottschcore.world.gen.structure;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.spatial.ICoords;
+
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,8 +38,10 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.ObjectIntIdentityMap;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedConstants;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.BitSetVoxelShapePart;
@@ -47,6 +59,11 @@ public class GottschTemplate2 extends Template {
 	private BlockPos size = BlockPos.ZERO;
 	private String author = "?";
 
+	/*
+	 * A map of all the specials within the template.
+	 */
+	private final Multimap<Block, BlockContext> tagBlockMap = ArrayListMultimap.create();
+	
 	public BlockPos getSize() {
 		return this.size;
 	}
@@ -181,11 +198,13 @@ public class GottschTemplate2 extends Template {
 		return blockList;
 	}
 
+	
 	// TODO this is the main method to insert code changes to.
 	/**
+	 * Non-Decay version.
 	 * Adds blocks and entities from this structure to the given world.
 	 */
-	public boolean addBlocksToWorld(IWorld worldIn, BlockPos pos, PlacementSettings placementIn, int flags) {
+	public boolean addBlocksToWorld(IWorld worldIn, BlockPos pos, PlacementSettings placementIn, final Block NULL_BLOCK, Map<BlockState, BlockState> replacementBlocks, int flags) {
 		if (this.blocks.isEmpty()) {
 			return false;
 		} else {
@@ -322,6 +341,34 @@ public class GottschTemplate2 extends Template {
 		}
 	}
 
+	/**
+	 * Decay version
+	 * @param worldIn
+	 * @param pos
+	 * @param placementIn
+	 * @param decayProcessor
+	 * @param NULL_BLOCK
+	 * @param replacementBlocks
+	 * @param flags
+	 * @return
+	 */
+	public boolean addBlocksToWorld(IWorld worldIn, BlockPos pos, PlacementSettings placementIn, 
+			@Nullable IDecayProcessor decayProcessor, final Block NULL_BLOCK, Map<BlockState, BlockState> replacementBlocks, int flags) {
+
+		return false;
+	}
+	
+	/**
+	 * Wrapper for transformedBlockPos()
+	 * 
+	 * @param placementIn
+	 * @param coords
+	 * @return
+	 */
+	public static ICoords transformedCoords(PlacementSettings placement, ICoords coords) {
+		return new Coords(transformedBlockPos(placement, coords.toPos()));
+	}
+	
 	public static void func_222857_a(IWorld worldIn, int p_222857_1_, VoxelShapePart voxelShapePartIn, int x, int y, int z) {
 		voxelShapePartIn.forEachFace((p_222856_5_, p_222856_6_, p_222856_7_, p_222856_8_) -> {
 			BlockPos blockPos = new BlockPos(x + p_222856_6_, y + p_222856_7_, z + p_222856_8_);
@@ -340,7 +387,34 @@ public class GottschTemplate2 extends Template {
 
 		});
 	}
+	
+	/**
+	 * 
+	 * @param random
+	 * @param findBlock
+	 * @return
+	 */
+	public ICoords findCoords(Random random, Block findBlock) {
+		ICoords coords = null; // TODO should this be an empty object or Coords.EMPTY_COORDS
+		List<BlockContext> contextList = (List<BlockContext>) getTagBlockMap().get(findBlock);
+		List<ICoords> list = contextList.stream().map(c -> c.getCoords()).collect(Collectors.toList());
+		if (list.isEmpty())
+			return new Coords(0, 0, 0);
+		if (list.size() == 1)
+			coords = list.get(0);
+		else
+			coords = list.get(random.nextInt(list.size()));
+		return coords;
+	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Multimap<Block, BlockContext> getTagBlockMap() {
+		return tagBlockMap;
+	}
+	
 	@Deprecated // FORGE: Add template parameter
 	public static List<GottschTemplate2.BlockInfo> processBlockInfos(IWorld worldIn, BlockPos offsetPos, PlacementSettings placementSettingsIn, List<GottschTemplate2.BlockInfo> blockInfos) {
 		return processBlockInfos(null, worldIn, offsetPos, placementSettingsIn, blockInfos);
@@ -797,4 +871,6 @@ public class GottschTemplate2 extends Template {
 			this.nbt = nbt;
 		}
 	}
+
+
 }
