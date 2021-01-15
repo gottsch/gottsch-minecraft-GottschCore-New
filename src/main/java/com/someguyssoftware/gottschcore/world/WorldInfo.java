@@ -75,8 +75,8 @@ public class WorldInfo {
 	 * @param coords
 	 * @return
 	 */
-	public static int getHeightValue(final World world, final ICoords coords) {
-		return getHeightValue(world, coords.toPos());
+	public static int getHeightValue(final IWorld world, final ICoords coords) {
+		return world.getHeight(Heightmap.Type.WORLD_SURFACE, coords.toPos()).getY();
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class WorldInfo {
 	 * @param pos
 	 * @return
 	 */
-	private static int getHeightValue(final World world, final BlockPos pos) {
+	private static int getHeightValue(final IWorld world, final BlockPos pos) {
 		BlockPos p = world.getHeight(Heightmap.Type.WORLD_SURFACE, pos);
 		return p.getY();
 	}
